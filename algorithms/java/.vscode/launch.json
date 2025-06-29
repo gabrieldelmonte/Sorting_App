@@ -1,0 +1,31 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch SortingAlgorithms",
+            "request": "launch",
+            "mainClass": "SortingAlgorithms",
+            "projectName": "java",
+            "classPaths": [
+                "${workspaceFolder}/bin",
+                "${workspaceFolder}/lib/*"
+            ],
+            "console": "integratedTerminal",
+            "args": []
+        },
+        {
+            "type": "java",
+            "name": "Launch SortingAlgorithms - Benchmark",
+            "request": "launch",
+            "mainClass": "SortingAlgorithms",
+            "projectName": "java",
+            "classPaths": [
+                "${workspaceFolder}/bin",
+                "${workspaceFolder}/lib/*"
+            ],
+            "console": "integratedTerminal",
+            "args": ["--benchmark", "--output", "results.json"]
+        }
+    ]
+}

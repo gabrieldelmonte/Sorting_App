@@ -1,0 +1,26 @@
+[
+  {
+    "algorithm": "bubble_sort",
+    "runs": 2,
+    "times": [
+      1.0758E-5,
+      6.774E-6
+    ],
+    "average_time": 8.766E-6,
+    "min_time": 6.774E-6,
+    "max_time": 1.0758E-5,
+    "std_deviation": 1.9919999999999997E-6
+  },
+  {
+    "algorithm": "merge_sort",
+    "runs": 2,
+    "times": [
+      1.3277E-5,
+      8.65E-6
+    ],
+    "average_time": 1.0963500000000001E-5,
+    "min_time": 8.65E-6,
+    "max_time": 1.3277E-5,
+    "std_deviation": 2.3135E-6
+  }
+]

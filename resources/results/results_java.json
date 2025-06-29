@@ -1,26 +1,38 @@
 [
   {
-    "algorithm": "bubble_sort",
-    "runs": 2,
-    "times": [
-      1.0758E-5,
-      6.774E-6
-    ],
-    "average_time": 8.766E-6,
-    "min_time": 6.774E-6,
-    "max_time": 1.0758E-5,
-    "std_deviation": 1.9919999999999997E-6
-  },
-  {
     "algorithm": "merge_sort",
     "runs": 2,
     "times": [
-      1.3277E-5,
-      8.65E-6
+      9.5589E-5,
+      5.8095E-5
     ],
-    "average_time": 1.0963500000000001E-5,
-    "min_time": 8.65E-6,
-    "max_time": 1.3277E-5,
-    "std_deviation": 2.3135E-6
+    "average_time": 7.6842E-5,
+    "min_time": 5.8095E-5,
+    "max_time": 9.5589E-5,
+    "std_deviation": 1.8747E-5
+  },
+  {
+    "algorithm": "quick_sort",
+    "runs": 2,
+    "times": [
+      8.971E-5,
+      6.1588E-5
+    ],
+    "average_time": 7.564900000000001E-5,
+    "min_time": 6.1588E-5,
+    "max_time": 8.971E-5,
+    "std_deviation": 1.4061000000000006E-5
+  },
+  {
+    "algorithm": "heap_sort",
+    "runs": 2,
+    "times": [
+      1.12018E-4,
+      7.4573E-5
+    ],
+    "average_time": 9.32955E-5,
+    "min_time": 7.4573E-5,
+    "max_time": 1.12018E-4,
+    "std_deviation": 1.8722499999999996E-5
   }
 ]

@@ -27,26 +27,40 @@ echo "5 3 5 1 3 5 1 3 5 1" > duplicate_data.txt
 echo "Test files created!"
 echo ""
 
-# Test all algorithms on small data
-echo "=== Testing all algorithms on small dataset ==="
-./algorithms_test --file small_data.txt --algorithms bubble_sort,selection_sort,insertion_sort,quick_sort,merge_sort,heap_sort,counting_sort,radix_sort,bucket_sort
+# Test all algorithms on small data with custom runs
+echo "=== Testing all algorithms on small dataset (3 runs each) ==="
+./algorithms_final --file small_data.txt --algorithms bubble_sort,selection_sort,insertion_sort,quick_sort,merge_sort,heap_sort,counting_sort,radix_sort,bucket_sort --runs 3
 
 echo ""
-echo "=== Testing performance on medium dataset ==="
-./algorithms_test --file medium_data.txt --algorithms quick_sort,merge_sort,heap_sort
+echo "=== Testing performance on medium dataset (5 runs each) ==="
+./algorithms_final --file medium_data.txt --algorithms quick_sort,merge_sort,heap_sort --runs 5
 
 echo ""
 echo "=== Testing edge cases ==="
-echo "Testing on sorted data:"
-./algorithms_test --file sorted_data.txt --algorithms quick_sort,merge_sort
+echo "Testing on sorted data (3 runs each):"
+./algorithms_final --file sorted_data.txt --algorithms quick_sort,merge_sort --runs 3
 
 echo ""
-echo "Testing on reverse sorted data:"
-./algorithms_test --file reverse_data.txt --algorithms quick_sort,merge_sort
+echo "Testing on reverse sorted data (3 runs each):"
+./algorithms_final --file reverse_data.txt --algorithms quick_sort,merge_sort --runs 3
 
 echo ""
-echo "Testing on duplicate data:"
-./algorithms_test --file duplicate_data.txt --algorithms counting_sort,radix_sort
+echo "Testing on duplicate data (3 runs each):"
+./algorithms_final --file duplicate_data.txt --algorithms counting_sort,radix_sort --runs 3
+
+echo ""
+echo "=== Testing different run counts ==="
+echo "Single run test:"
+./algorithms_final --file small_data.txt --algorithms quick_sort --runs 1
+
+echo ""
+echo "Many runs test (15 runs):"
+./algorithms_final --file small_data.txt --algorithms merge_sort --runs 15
 
 echo ""
 echo "=== All tests completed! ==="
+
+# Clean up
+rm small_data.txt medium_data.txt large_data.txt sorted_data.txt reverse_data.txt duplicate_data.txt
+
+echo "Check results at: ../../resources/results/results_cpp.json"

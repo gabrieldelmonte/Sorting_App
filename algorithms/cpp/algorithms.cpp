@@ -7,9 +7,12 @@
 #include <algorithm>
 #include <iostream>
 #include <fstream>
+#include <numeric>
+#include <cstdlib>
 #include <vector>
 #include <string>
 #include <thread>
+#include <chrono>
 #include <mutex>
 #include <queue>
 #include <cmath>
@@ -320,16 +323,23 @@ std::vector<int> read_file(const std::string& path) {
     return data;
 }
 
-std::pair<double, std::string> run_sort(const std::string& algorithm,
-                                        const std::function<void(std::vector<int>&)>& sort_function,
-                                        const std::vector<int>& data) {
-    auto copy = data;
-    auto start = std::chrono::high_resolution_clock::now();
-    sort_function(copy);
-    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> duration = end - start;
-
-    return {duration.count(), algorithm};
+std::pair<std::vector<double>, std::string> run_sort_multiple(const std::string& algorithm,
+                                                              const std::function<void(std::vector<int>&)>& sort_function,
+                                                              const std::vector<int>& data,
+                                                              int runs = 10) {
+    std::vector<double> times;
+    times.reserve(runs);
+    
+    for (int i = 0; i < runs; ++i) {
+        auto copy = data;
+        auto start = std::chrono::high_resolution_clock::now();
+        sort_function(copy);
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = end - start;
+        times.push_back(duration.count());
+    }
+    
+    return {times, algorithm};
 }
 
 // --- Main function ---
@@ -337,6 +347,7 @@ std::pair<double, std::string> run_sort(const std::string& algorithm,
 int main(int argc, char* argv[]) {
     std::string file_path;
     std::vector<std::string> chosen_algorithms;
+    int num_runs = 10; // Default number of runs
 
     for (int index = 1; index < argc; ++index) {
         std::string arg = argv[index];
@@ -354,6 +365,13 @@ int main(int argc, char* argv[]) {
 
             chosen_algorithms.push_back(algorithms);
         }
+        else if (arg == "--runs" && index + 1 < argc) {
+            num_runs = std::stoi(argv[++index]);
+            if (num_runs < 1) {
+                std::cerr << "Number of runs must be at least 1." << std::endl;
+                return 1;
+            }
+        }
         else {
             std::cerr << "Unknown argument: " << arg << std::endl;
             return 1;
@@ -361,7 +379,7 @@ int main(int argc, char* argv[]) {
     }
 
     if (file_path.empty() || chosen_algorithms.empty()) {
-        std::cerr << "Usage: " << argv[0] << " --file <path> --algorithms <alg1,alg2,...>" << std::endl;
+        std::cerr << "Usage: " << argv[0] << " --file <path> --algorithms <alg1,alg2,...> [--runs <number>]" << std::endl;
         return 1;
     }
 
@@ -397,10 +415,30 @@ int main(int argc, char* argv[]) {
     for (const auto& algorithm : chosen_algorithms) {
         auto it = algorithms.find(algorithm);
         if (it != algorithms.end()) {
-            threads.emplace_back([&, algorithm, sort_function = it->second]() {
-                auto [duration, algo_name] = run_sort(algorithm, sort_function, data);
+            threads.emplace_back([&, algorithm, sort_function = it->second, num_runs]() {
+                auto [times, algo_name] = run_sort_multiple(algorithm, sort_function, data, num_runs);
+                
+                // Calculate statistics
+                double avg_time = std::accumulate(times.begin(), times.end(), 0.0) / times.size();
+                double min_time = *std::min_element(times.begin(), times.end());
+                double max_time = *std::max_element(times.begin(), times.end());
+
+                // Calculate standard deviation
+                double sum_sq = 0.0;
+                for (double time : times)
+                    sum_sq += (time - avg_time) * (time - avg_time);
+                double std_dev = std::sqrt(sum_sq / times.size());
+
                 std::lock_guard<std::mutex> lock(output_mutex);
-                results.push_back({{"algorithm", algo_name}, {"time", duration}});
+                results.push_back({
+                    {"algorithm", algo_name},
+                    {"runs", num_runs},
+                    {"times", times},
+                    {"average_time", avg_time},
+                    {"min_time", min_time},
+                    {"max_time", max_time},
+                    {"std_deviation", std_dev}
+                });
             });
         }
         else {
@@ -413,11 +451,25 @@ int main(int argc, char* argv[]) {
         if (thread.joinable())
             thread.join();
 
-    std::ofstream outfile("results.json");
+    // Create the results directory path relative to the project root
+    std::string results_dir = "../../resources/results/";
+    std::string results_file = results_dir + "results_cpp.json";
+    
+    // Create directory if it doesn't exist (using system call)
+    system("mkdir -p ../../resources/results/");
+
+    std::ofstream outfile(results_file);
+    if (!outfile) {
+        std::cerr << "Error: Could not create results file at " << results_file << std::endl;
+        // Fallback to current directory
+        results_file = "results_cpp.json";
+        outfile.open(results_file);
+    }
+    
     std::cout << results.dump(4) << std::endl;
     outfile << results.dump(4);
     outfile.close();
-    std::cout << "Sorting completed. Results saved to results.json." << std::endl;
+    std::cout << "Sorting completed. Results saved to " << results_file << std::endl;
 
     return 0;
 }

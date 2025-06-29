@@ -349,6 +349,35 @@ int main(int argc, char* argv[]) {
     std::vector<std::string> chosen_algorithms;
     int num_runs = 10; // Default number of runs
 
+    // Check for help first
+    if (argc == 1 || (argc == 2 && (std::string(argv[1]) == "--help" || std::string(argv[1]) == "-h"))) {
+        std::cout << "C++ Sorting Algorithms Benchmark Tool\n\n";
+        std::cout << "Usage: " << argv[0] << " --file <input_file> --algorithms <algorithm_list> [--runs <number>]\n\n";
+        std::cout << "Required Arguments:\n";
+        std::cout << "  --file <path>           Input file containing space-separated integers\n";
+        std::cout << "  --algorithms <list>     Comma-separated list of algorithms to run\n\n";
+        std::cout << "Optional Arguments:\n";
+        std::cout << "  --runs <number>         Number of runs per algorithm (default: 10)\n";
+        std::cout << "  --help, -h              Show this help message\n\n";
+        std::cout << "Available Algorithms:\n";
+        std::cout << "  bubble_sort             Bubble Sort (O(n²))\n";
+        std::cout << "  selection_sort          Selection Sort (O(n²))\n";
+        std::cout << "  insertion_sort          Insertion Sort (O(n²))\n";
+        std::cout << "  quick_sort              Quick Sort (O(n log n) average)\n";
+        std::cout << "  merge_sort              Merge Sort (O(n log n))\n";
+        std::cout << "  heap_sort               Heap Sort (O(n log n))\n";
+        std::cout << "  counting_sort           Counting Sort (O(n + k))\n";
+        std::cout << "  radix_sort              Radix Sort (O(d × (n + k)))\n";
+        std::cout << "  bucket_sort             Bucket Sort (O(n + k))\n\n";
+        std::cout << "Examples:\n";
+        std::cout << "  " << argv[0] << " --file data.txt --algorithms quick_sort,merge_sort\n";
+        std::cout << "  " << argv[0] << " --file data.txt --algorithms bubble_sort --runs 15\n";
+        std::cout << "  " << argv[0] << " --file data.txt --algorithms quick_sort,merge_sort,heap_sort --runs 5\n\n";
+        std::cout << "Output:\n";
+        std::cout << "  Results are saved to: ../../resources/results/results_cpp.json\n";
+        return 0;
+    }
+
     for (int index = 1; index < argc; ++index) {
         std::string arg = argv[index];
 
@@ -372,14 +401,21 @@ int main(int argc, char* argv[]) {
                 return 1;
             }
         }
+        else if (arg == "--help" || arg == "-h") {
+            // Help already handled above, but include here for completeness
+            return 0;
+        }
         else {
             std::cerr << "Unknown argument: " << arg << std::endl;
+            std::cerr << "Use --help for usage information." << std::endl;
             return 1;
         }
     }
 
     if (file_path.empty() || chosen_algorithms.empty()) {
+        std::cerr << "Error: Missing required arguments." << std::endl;
         std::cerr << "Usage: " << argv[0] << " --file <path> --algorithms <alg1,alg2,...> [--runs <number>]" << std::endl;
+        std::cerr << "Use --help for detailed usage information." << std::endl;
         return 1;
     }
 

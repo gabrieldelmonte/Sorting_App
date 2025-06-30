@@ -458,13 +458,29 @@ This will execute the benchmark scripts and may take some time.
         self.root.update()
         
         try:
+            # Create dataset once for all languages
+            self.update_status("Creating dataset...", "orange")
+            self.root.update()
+            
+            # Get selected distribution type
+            selected_distribution_display = self.distribution_combo.get()
+            selected_distribution = self.distribution_map.get(selected_distribution_display, "uniform")
+            
+            dataset_path = self.create_dataset_with_creator(num_elements, perturbation_level, selected_distribution)
+            if not dataset_path:
+                self.update_status("Failed to create dataset", "red")
+                return
+            
+            self.update_status(f"Dataset created: {selected_distribution} distribution", "green")
+            self.root.update()
+            
             # Run algorithms for each selected language
             success_count = 0
             for lang in selected_languages:
                 self.update_status(f"Running {lang.upper()} algorithms...", "orange")
                 self.root.update()
                 
-                if self.run_language_algorithms(lang, selected_algorithms, num_runs, num_elements, perturbation_level):
+                if self.run_language_algorithms(lang, selected_algorithms, num_runs, dataset_path):
                     success_count += 1
                     self.update_status(f"Completed {lang.upper()} algorithms", "green")
                 else:
@@ -485,21 +501,17 @@ This will execute the benchmark scripts and may take some time.
             # Re-enable the run button
             self.run_button.config(state='normal', text="🚀 Run Algorithms")
     
-    def run_language_algorithms(self, language, algorithms, runs, elements, perturbation_level):
-        """Run algorithms for a specific language"""
+    def run_language_algorithms(self, language, algorithms, runs, dataset_path):
+        """Run algorithms for a specific language using the provided dataset"""
         import subprocess
-        import tempfile
-        
-        # Create dataset file using the creator
-        # Get selected distribution type
-        selected_distribution_display = self.distribution_combo.get()
-        selected_distribution = self.distribution_map.get(selected_distribution_display, "uniform")
-        
-        dataset_path = self.create_dataset_with_creator(elements, perturbation_level, selected_distribution)
-        if not dataset_path:
-            return False
+        import os
         
         try:
+            # Verify dataset file exists
+            if not os.path.exists(dataset_path):
+                self.update_status(f"Dataset file not found: {dataset_path}", "red")
+                return False
+            
             # Determine the algorithm script path
             algo_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 
                                   "algorithms", language)
@@ -622,22 +634,21 @@ This will execute the benchmark scripts and may take some time.
             
             return True
             
-        finally:
-            # Clean up temporary dataset file
-            if os.path.exists(dataset_path):
-                os.remove(dataset_path)
+        except Exception as e:
+            self.update_status(f"Error running {language} algorithms: {str(e)}", "red")
+            return False
     
     def create_dataset_with_creator(self, num_elements, perturbation_level, distribution_type="uniform"):
         """Create a dataset using the creator.cpp program"""
         import subprocess
-        import tempfile
         import os
         
         try:
-            # Path to the creator executable
+            # Path to the creator executable and dataset file
             creator_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 
                                      "resources", "sets")
             creator_path = os.path.join(creator_dir, "creator")
+            dataset_path = os.path.join(creator_dir, "dataset.txt")
             
             # Check if creator executable exists, if not try to compile it
             if not os.path.exists(creator_path):
@@ -656,28 +667,27 @@ This will execute the benchmark scripts and may take some time.
                     self.update_status(f"Failed to compile creator: {result.stderr}", "red")
                     return None
             
-            # Create temporary output file
-            with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.txt') as f:
-                output_path = f.name
-            
-            # Run the creator with selected distribution
+            # Run the creator with selected distribution to create dataset.txt
             cmd = [
                 creator_path,
                 "--size", str(num_elements),
                 "--distribution", distribution_type,
                 "--perturbation", str(perturbation_level),
-                "--output", output_path
+                "--output", "dataset.txt"
             ]
             
             result = subprocess.run(cmd, capture_output=True, text=True, cwd=creator_dir)
             
             if result.returncode != 0:
                 self.update_status(f"Failed to create dataset: {result.stderr}", "red")
-                if os.path.exists(output_path):
-                    os.remove(output_path)
                 return None
             
-            return output_path
+            # Verify the dataset file was created
+            if not os.path.exists(dataset_path):
+                self.update_status("Dataset file was not created", "red")
+                return None
+            
+            return dataset_path
             
         except Exception as e:
             self.update_status(f"Error creating dataset: {str(e)}", "red")

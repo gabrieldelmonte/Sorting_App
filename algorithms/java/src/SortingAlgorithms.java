@@ -18,7 +18,7 @@ public class SortingAlgorithms {
     // --- Sorting Algorithms ---
     
     /**
-     * Bubble Sort - O(n²)
+     * Bubble Sort
      */
     public static void bubbleSort(int[] array) {
         int n = array.length;
@@ -38,7 +38,7 @@ public class SortingAlgorithms {
     }
     
     /**
-     * Selection Sort - O(n²)
+     * Selection Sort
      */
     public static void selectionSort(int[] array) {
         int n = array.length;
@@ -55,7 +55,7 @@ public class SortingAlgorithms {
     }
     
     /**
-     * Insertion Sort - O(n²)
+     * Insertion Sort
      */
     public static void insertionSort(int[] array) {
         int n = array.length;
@@ -75,7 +75,7 @@ public class SortingAlgorithms {
     }
     
     /**
-     * Quick Sort - O(n log n) average
+     * Quick Sort
      */
     public static void quickSort(int[] array) {
         if (array.length < 2)
@@ -105,7 +105,7 @@ public class SortingAlgorithms {
     }
     
     /**
-     * Merge Sort - O(n log n)
+     * Merge Sort
      */
     public static void mergeSort(int[] array) {
         if (array.length < 2)
@@ -148,7 +148,7 @@ public class SortingAlgorithms {
     }
     
     /**
-     * Heap Sort - O(n log n)
+     * Heap Sort
      */
     public static void heapSort(int[] array) {
         int n = array.length;
@@ -184,7 +184,7 @@ public class SortingAlgorithms {
     }
     
     /**
-     * Counting Sort - O(n + k)
+     * Counting Sort
      */
     public static void countingSort(int[] array) {
         if (array.length < 2)
@@ -208,7 +208,7 @@ public class SortingAlgorithms {
     }
     
     /**
-     * Radix Sort - O(d × (n + k))
+     * Radix Sort
      */
     public static void radixSort(int[] array) {
         if (array.length < 2)
@@ -243,7 +243,7 @@ public class SortingAlgorithms {
     }
     
     /**
-     * Bucket Sort - O(n + k)
+     * Bucket Sort
      */
     public static void bucketSort(int[] array) {
         if (array.length < 2)
@@ -356,14 +356,14 @@ public class SortingAlgorithms {
         System.out.println("  --runs <number>         Number of runs per algorithm (default: 10)");
         System.out.println("  --help, -h              Show this help message\n");
         System.out.println("Available Algorithms:");
-        System.out.println("  bubble_sort             Bubble Sort (O(n²))");
-        System.out.println("  selection_sort          Selection Sort (O(n²))");
-        System.out.println("  insertion_sort          Insertion Sort (O(n²))");
+        System.out.println("  bubble_sort             Bubble Sort (O(n^2))");
+        System.out.println("  selection_sort          Selection Sort (O(n^2))");
+        System.out.println("  insertion_sort          Insertion Sort (O(n^2))");
         System.out.println("  quick_sort              Quick Sort (O(n log n) average)");
         System.out.println("  merge_sort              Merge Sort (O(n log n))");
         System.out.println("  heap_sort               Heap Sort (O(n log n))");
         System.out.println("  counting_sort           Counting Sort (O(n + k))");
-        System.out.println("  radix_sort              Radix Sort (O(d × (n + k)))");
+        System.out.println("  radix_sort              Radix Sort (O(d x (n + k)))");
         System.out.println("  bucket_sort             Bucket Sort (O(n + k))\n");
         System.out.println("Examples:");
         System.out.println("  java " + programName + " --file data.txt --algorithms quick_sort,merge_sort");

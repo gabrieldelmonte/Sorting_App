@@ -360,14 +360,14 @@ int main(int argc, char* argv[]) {
         std::cout << "  --runs <number>         Number of runs per algorithm (default: 10)\n";
         std::cout << "  --help, -h              Show this help message\n\n";
         std::cout << "Available Algorithms:\n";
-        std::cout << "  bubble_sort             Bubble Sort (O(n²))\n";
-        std::cout << "  selection_sort          Selection Sort (O(n²))\n";
-        std::cout << "  insertion_sort          Insertion Sort (O(n²))\n";
+        std::cout << "  bubble_sort             Bubble Sort (O(n^2))\n";
+        std::cout << "  selection_sort          Selection Sort (O(n^2))\n";
+        std::cout << "  insertion_sort          Insertion Sort (O(n^2))\n";
         std::cout << "  quick_sort              Quick Sort (O(n log n) average)\n";
         std::cout << "  merge_sort              Merge Sort (O(n log n))\n";
         std::cout << "  heap_sort               Heap Sort (O(n log n))\n";
         std::cout << "  counting_sort           Counting Sort (O(n + k))\n";
-        std::cout << "  radix_sort              Radix Sort (O(d × (n + k)))\n";
+        std::cout << "  radix_sort              Radix Sort (O(d x (n + k)))\n";
         std::cout << "  bucket_sort             Bucket Sort (O(n + k))\n\n";
         std::cout << "Examples:\n";
         std::cout << "  " << argv[0] << " --file data.txt --algorithms quick_sort,merge_sort\n";

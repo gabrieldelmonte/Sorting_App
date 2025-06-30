@@ -1,0 +1,56 @@
+# Docker ignore file for Sorting Algorithms Comparison GUI
+
+# Git files
+.git/
+.gitignore
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.pytest_cache/
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# Documentation
+*.md
+docs/
+
+# Test files
+tests/
+ui/tests/
+
+# Temporary files
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# Build artifacts (we'll compile in Docker)
+algorithms/cpp/algorithms
+algorithms/java/bin/*.class
+resources/sets/creator
+
+# Result files (will be generated fresh)
+resources/results/*.json
+
+# Logs
+*.log
+
+# Docker files (avoid recursion)
+Dockerfile*
+docker-compose*.yml
+.dockerignore

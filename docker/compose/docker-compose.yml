@@ -1,0 +1,99 @@
+services:
+  sorting-gui:
+    build:
+      context: ../..
+      dockerfile: docker/Dockerfile
+    image: sorting-algorithms-gui:latest
+    container_name: sorting-gui-app
+    
+    # Environment variables
+    environment:
+      - DISPLAY=${DISPLAY:-:0}
+      - PYTHONUNBUFFERED=1
+    
+    # Volume mounts for X11 forwarding (Linux/macOS)
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ${HOME}/.Xauthority:/home/appuser/.Xauthority:ro
+      # Optional: Mount results to host for persistence
+      - ../../results-output:/app/resources/results
+    
+    # Network mode for X11 (Linux/macOS)
+    network_mode: host
+    
+    # Security options
+    security_opt:
+      - seccomp:unconfined
+    
+    # Interactive mode
+    stdin_open: true
+    tty: true
+    
+    # Restart policy
+    restart: unless-stopped
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '2.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+
+  # Fallback X11 service without problematic mounts (for Docker Desktop)
+  sorting-gui-x11-simple:
+    build:
+      context: ../..
+      dockerfile: docker/Dockerfile
+    image: sorting-algorithms-gui:latest
+    container_name: sorting-gui-simple
+    
+    environment:
+      - DISPLAY=${DISPLAY:-:0}
+      - PYTHONUNBUFFERED=1
+    
+    volumes:
+      # Only mount results, skip X11 mounts that might fail
+      - ../../results-output:/app/resources/results
+    
+    # Use host network for X11 access
+    network_mode: host
+    
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+
+# Alternative service for Windows/Wayland users (VNC-based)
+  sorting-gui-vnc:
+    build:
+      context: ../..
+      dockerfile: docker/Dockerfile
+    image: sorting-algorithms-gui:latest
+    container_name: sorting-gui-vnc
+    
+    environment:
+      - DISPLAY=:1
+      - PYTHONUNBUFFERED=1
+    
+    volumes:
+      # Mount results to host for persistence
+      - ../../results-output:/app/resources/results
+      # Mount VNC script
+      - ../scripts/vnc-start.sh:/app/vnc-start.sh:ro
+    
+    # Use simplified VNC approach with virtual display
+    command: ["/app/vnc-start.sh"]
+    
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+
+networks:
+  default:
+    driver: bridge
+
+volumes:
+  results-output:
+    driver: local

@@ -11,48 +11,74 @@ This project provides identical implementations of 9 sorting algorithms in C++, 
 ```
 Sorting_App/
 ├── algorithms/
-│   ├── cpp/                      # C++ Implementation
-│   │   ├── algorithms.cpp        # Main C++ program
-│   │   ├── README.md             # C++ documentation
-│   │   ├── quick_test.sh         # Quick validation test
-│   │   ├── test_algorithms.sh    # Comprehensive testing
-│   │   ├── performance_benchmark.sh # Performance benchmarks
-│   │   ├── verify_correctness.sh # Correctness verification
-│   │   └── nlohmann/             # JSON library
+│   ├── cpp/                             # C++ Implementation
+│   │   ├── algorithms.cpp               # Main C++ program
+│   │   ├── README.md                    # C++ documentation
+│   │   ├── scripts/                     # Test and benchmark scripts
+│   │   │   ├── quick_test.sh            # Quick validation test
+│   │   │   ├── test_algorithms.sh       # Comprehensive testing
+│   │   │   ├── performance_benchmark.sh # Performance benchmarks
+│   │   │   └── verify_correctness.sh    # Correctness verification
+│   │   └── nlohmann/                    # JSON library
 │   │       └── json.hpp
 │   │
-│   └── python/                   # Python Implementation
-│       ├── algorithms.py         # Main Python program
-│       ├── README.md             # Python documentation
-│       ├── quick_test.sh         # Quick validation test
-│       ├── test_algorithms.sh    # Comprehensive testing
-│       ├── performance_benchmark.sh # Performance benchmarks
-│       ├── verify_correctness.sh # Correctness verification
-│       └── compare_languages.sh  # Cross-language comparison
-│
-│   └── java/                     # Java Implementation
-│       ├── SortingAlgorithms.java # Main Java program
-│       ├── gson-2.10.1.jar      # GSON library for JSON
-│       ├── README.md             # Java documentation
-│       ├── quick_test.sh         # Quick validation test
-│       ├── test_algorithms.sh    # Comprehensive testing
-│       ├── performance_benchmark.sh # Performance benchmarks
-│       └── verify_correctness.sh # Correctness verification
+│   ├── python/                          # Python Implementation
+│   │   ├── algorithms.py                # Main Python program
+│   │   ├── README.md                    # Python documentation
+│   │   └── scripts/                     # Test and benchmark scripts
+│   │       ├── quick_test.sh            # Quick validation test
+│   │       ├── test_algorithms.sh       # Comprehensive testing
+│   │       ├── performance_benchmark.sh # Performance benchmarks
+│   │       ├── verify_correctness.sh    # Correctness verification
+│   │       └── compare_languages.sh     # Cross-language comparison
+│   │
+│   └── java/                            # Java Implementation
+│       ├── src/                         # Java source files
+│       │   └── SortingAlgorithms.java   # Main Java program
+│       ├── lib/                         # External libraries
+│       │   └── gson-2.10.1.jar          # GSON library for JSON
+│       ├── bin/                         # Compiled classes
+│       ├── .vscode/                     # VS Code configuration
+│       ├── .classpath                   # Eclipse classpath
+│       ├── .project                     # Eclipse project
+│       ├── README.md                    # Java documentation
+│       ├── VS_CODE_SETUP.md             # VS Code setup guide
+│       ├── run.sh                       # Quick run script
+│       └── scripts/                     # Test and benchmark scripts
+│           ├── quick_test.sh            # Quick validation test
+│           ├── test_algorithms.sh       # Comprehensive testing
+│           ├── performance_benchmark.sh # Performance benchmarks
+│           └── verify_correctness.sh    # Correctness verification
 │
 ├── resources/
-│   ├── data/                     # Test datasets
+│   ├── sets/                            # Test dataset creation
+│   │   ├── creator.cpp                  # Dataset creator tool
+│   │   ├── creator                      # Compiled creator (after build)
+│   │   ├── Makefile                     # Build configuration
+│   │   ├── create_datasets.sh           # Helper script for dataset creation
+│   │   └── README.md                    # Dataset creator documentation
+│   │
+│   ├── data/                            # Test datasets (created by user)
 │   │   ├── random_10.txt
 │   │   ├── random_100.txt
 │   │   ├── random_1000.txt
 │   │   ├── sorted_data.txt
 │   │   └── reverse_sorted.txt
 │   │
-│   └── results/                  # Output files
-│       ├── results_cpp.json     # C++ results
-│       ├── results_python.json  # Python results
-│       └── results_java.json    # Java results
+│   └── results/                         # Output files
+│       ├── results_cpp.json             # C++ results
+│       ├── results_python.json          # Python results
+│       ├── results_java.json            # Java results
+│       └── README.md                    # Results documentation
 │
-└── README.md                     # This file
+├── tests/                               # Comprehensive test suite
+│   ├── run_all_tests.sh                 # Master test script (all languages)
+│   ├── quick_test.sh                    # Quick verification script
+│   └── README.md                        # Test suite documentation
+│
+├── docker/                              # Docker configuration (if applicable)
+├── ui/                                  # User interface (if applicable)
+└── README.md                            # This file
 ```
 
 ## Features
@@ -81,6 +107,9 @@ Sorting_App/
 - **Error Handling**: Comprehensive input validation and error recovery
 - **JSON Output**: Structured results for easy analysis
 - **Cross-Platform**: Works on Linux, macOS, and Windows
+- **Dataset Creation**: Configurable test data generator with multiple distributions
+- **Comprehensive Testing**: Automated test suite for all implementations
+- **IDE Support**: VS Code integration for Java development
 
 ## Quick Start
 
@@ -128,8 +157,13 @@ python3 algorithms.py --file ../../resources/data/random_100.txt --algorithms qu
 #### Java Version
 ```bash
 cd algorithms/java/
-javac -cp gson-2.10.1.jar SortingAlgorithms.java
-java -cp .:gson-2.10.1.jar SortingAlgorithms --file ../../resources/data/random_100.txt --algorithms quick_sort,merge_sort --runs 5
+# Build using provided script
+./run.sh
+
+# Or build manually
+mkdir -p bin
+javac -cp "lib/*:src" -d bin src/SortingAlgorithms.java
+java -cp "bin:lib/*" SortingAlgorithms --file ../../resources/data/random_100.txt --algorithms quick_sort,merge_sort --runs 5
 ```
 
 ## Usage Examples
@@ -146,34 +180,42 @@ java -cp .:gson-2.10.1.jar SortingAlgorithms --file ../../resources/data/random_
 ### Performance Comparison
 ```bash
 # C++ performance test
-cd algorithms/cpp/
+cd algorithms/cpp/scripts/
 ./performance_benchmark.sh
 
 # Python performance test  
-cd algorithms/python/
+cd algorithms/python/scripts/
 ./performance_benchmark.sh
 
 # Java performance test
-cd algorithms/java/
+cd algorithms/java/scripts/
 ./performance_benchmark.sh
 
 # Cross-language comparison
-cd algorithms/python/
+cd algorithms/python/scripts/
 ./compare_languages.sh
+
+# Comprehensive test across all languages
+cd tests/
+./run_all_tests.sh
 ```
 
 ### Quick Validation
 ```bash
 # Validate C++ implementation
-cd algorithms/cpp/
+cd algorithms/cpp/scripts/
 ./quick_test.sh
 
 # Validate Python implementation
-cd algorithms/python/
+cd algorithms/python/scripts/
 ./quick_test.sh
 
 # Validate Java implementation
-cd algorithms/java/
+cd algorithms/java/scripts/
+./quick_test.sh
+
+# Quick test all implementations
+cd tests/
 ./quick_test.sh
 ```
 
@@ -235,14 +277,26 @@ All three implementations produce identical JSON output:
 
 ## Available Scripts
 
-### Testing Scripts (All Languages)
+### Master Test Scripts
+- `tests/run_all_tests.sh` - Comprehensive test suite for all three languages
+- `tests/quick_test.sh` - Quick verification test for all implementations
+
+### Individual Language Scripts (in each `scripts/` directory)
 - `quick_test.sh` - Quick validation and basic functionality test
 - `test_algorithms.sh` - Comprehensive algorithm testing with various datasets
 - `performance_benchmark.sh` - Performance benchmarking with multiple dataset sizes
 - `verify_correctness.sh` - Correctness verification against known results
 
-### Additional Python Scripts
-- `compare_languages.sh` - Cross-language performance comparison
+### Additional Tools
+- `algorithms/java/run.sh` - Quick build and run script for Java
+- `resources/sets/create_datasets.sh` - Dataset creation helper script
+- `algorithms/python/scripts/compare_languages.sh` - Cross-language performance comparison
+
+### Script Options
+Most scripts support:
+- `--help` or `-h` - Show usage information
+- `--verbose` or `-v` - Detailed output and error messages
+- `--clean` - Clean build artifacts (where applicable)
 
 ## Input Data Formats
 
@@ -258,6 +312,15 @@ The `resources/data/` directory contains pre-generated test datasets:
 - `random_1000.txt` - 1000 random integers
 - `sorted_data.txt` - Pre-sorted data for best-case testing
 - `reverse_sorted.txt` - Reverse-sorted data for worst-case testing
+
+### Creating Custom Datasets
+Use the dataset creator tool for custom test data:
+```bash
+cd resources/sets/
+./creator --size 10000 --distribution uniform --perturbation 1.0 --output custom_data.txt
+```
+
+See `resources/sets/README.md` for complete dataset creation options.
 
 ## Error Handling
 
@@ -282,6 +345,12 @@ All three implementations handle:
 - **Performance Testing**: Statistical significance with multiple runs
 - **Correctness Testing**: Verification against known results
 - **Cross-Platform Testing**: Linux, macOS, Windows compatibility
+- **Cross-Language Testing**: Identical datasets across all implementations
+
+### IDE Integration
+- **VS Code**: Complete Java development environment with GSON support
+- **Eclipse**: Project files included for Java development
+- **Any Editor**: All languages support standard development tools
 
 ### Adding New Algorithms
 
@@ -292,6 +361,7 @@ To add a new sorting algorithm:
 3. **Update documentation** in all README files
 4. **Add test cases** to verification scripts
 5. **Update help text** and usage examples
+6. **Test with comprehensive test suite** (`tests/run_all_tests.sh`)
 
 ## Contributing
 
@@ -300,7 +370,8 @@ To add a new sorting algorithm:
 3. **Implement in all three languages** with identical functionality
 4. **Add comprehensive tests** and documentation
 5. **Verify cross-platform compatibility**
-6. **Submit pull request** with detailed description
+6. **Run full test suite** (`tests/run_all_tests.sh`) to ensure compatibility
+7. **Submit pull request** with detailed description
 
 ## License
 
@@ -314,12 +385,74 @@ This project demonstrates:
 - **Software Engineering**: Multi-threading, error handling, testing strategies
 - **Data Analysis**: Statistical analysis and JSON data handling
 - **Cross-Platform Development**: Consistent behavior across operating systems
+- **Test Automation**: Comprehensive automated testing across multiple languages
+- **Dataset Generation**: Configurable test data creation with statistical distributions
 
 ## Research Applications
 
 Ideal for:
 - **Performance Studies**: Quantitative analysis of language performance
 - **Algorithm Education**: Teaching sorting algorithms with practical examples
-- **Benchmarking Research**: Standardized testing framework
-- **Language Evaluation**: Comparing implementation approaches
+- **Benchmarking Research**: Standardized testing framework with automated tools
+- **Language Evaluation**: Comparing implementation approaches across languages
 - **Concurrency Studies**: Multi-threading performance analysis
+- **Statistical Analysis**: Automated data collection and analysis workflows
+
+## Dataset Creation
+
+### Creating Custom Test Data
+
+The project includes a powerful dataset creation tool for generating test data with various characteristics:
+
+```bash
+cd resources/sets/
+
+# Build the creator tool
+make
+
+# Create datasets with different properties
+./creator --size 1000 --distribution uniform --perturbation 1.0 --output random_data.txt
+./creator --size 5000 --distribution normal --perturbation 0.2 --output mostly_sorted.txt
+./creator --size 10000 --distribution exponential --perturbation 0.8 --output exp_data.txt
+
+# Use helper script for quick dataset creation
+./create_datasets.sh quick
+```
+
+### Dataset Options
+
+- **Size**: 1 to 500,000 elements
+- **Distributions**: uniform, normal, exponential, beta
+- **Perturbation**: 0.0 (fully sorted) to 1.0 (fully random)
+- **Value Range**: Elements constrained to [1, array_size]
+
+See `resources/sets/README.md` for detailed documentation.
+
+## Comprehensive Testing
+
+### Master Test Suite
+
+Run all implementations with identical datasets:
+
+```bash
+cd tests/
+
+# Quick verification (recommended first)
+./quick_test.sh
+
+# Full comprehensive test suite
+./run_all_tests.sh
+
+# Verbose output for debugging
+./run_all_tests.sh --verbose
+```
+
+### Test Features
+
+- **Same Dataset**: Uses identical data across all three languages
+- **All Algorithms**: Tests all 9 sorting algorithms
+- **Statistical Accuracy**: 5 runs per algorithm for reliable results
+- **Automated Building**: Compiles all implementations automatically
+- **JSON Output**: Generates structured results for analysis
+
+See `tests/README.md` for detailed documentation.

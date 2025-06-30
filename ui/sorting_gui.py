@@ -19,7 +19,27 @@ class SortingComparisonGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("Sorting Algorithms Performance Comparison")
-        self.root.geometry("1400x800")
+        
+        # Get screen dimensions and set responsive window size
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+        
+        # Set window size as percentage of screen size (80% width, 85% height)
+        window_width = int(screen_width * 0.8)
+        window_height = int(screen_height * 0.85)
+        
+        # Ensure minimum window size
+        min_width = 1000
+        min_height = 600
+        window_width = max(window_width, min_width)
+        window_height = max(window_height, min_height)
+        
+        # Center the window on screen
+        x = (screen_width - window_width) // 2
+        y = (screen_height - window_height) // 2
+        
+        self.root.geometry(f"{window_width}x{window_height}+{x}+{y}")
+        self.root.minsize(min_width, min_height)
         self.root.configure(bg='#f0f0f0')
         
         # Data storage

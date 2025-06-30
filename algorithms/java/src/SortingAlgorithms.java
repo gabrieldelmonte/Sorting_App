@@ -528,7 +528,7 @@ public class SortingAlgorithms {
         System.out.println(gson.toJson(jsonResults));
         
         // Save results to file
-        String resultsDir = "../../../resources/results/";
+        String resultsDir = "../../resources/results/";
         String resultsFile = resultsDir + "results_java.json";
         
         try {

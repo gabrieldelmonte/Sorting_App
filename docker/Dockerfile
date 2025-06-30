@@ -2,7 +2,7 @@
 # Multi-stage build for optimized container size
 
 # Build stage
-FROM ubuntu:22.04 as builder
+FROM ubuntu:22.04 AS builder
 
 # Set environment variables to avoid interactive prompts
 ENV DEBIAN_FRONTEND=noninteractive
@@ -57,6 +57,7 @@ RUN apt-get update && apt-get install -y \
     python3-tk \
     openjdk-17-jre \
     x11-apps \
+    x11-utils \
     xauth \
     xvfb \
     fonts-dejavu-core \
@@ -85,11 +86,11 @@ COPY ui/ /app/ui/
 RUN cd ui && pip3 install --no-cache-dir -r requirements.txt
 
 # Create a non-root user for security
-RUN useradd -m -s /bin/bash appuser && \
-    chown -R appuser:appuser /app
+#RUN useradd -m -s /bin/bash appuser && \
+#    chown -R appuser:appuser /app
 
 # Switch to non-root user
-USER appuser
+#USER appuser
 
 # Set working directory to UI
 WORKDIR /app/ui
@@ -101,8 +102,13 @@ set -e\n\
 # Function to check if DISPLAY is available\n\
 check_display() {\n\
     if [ -n "$DISPLAY" ]; then\n\
-        if xhost >/dev/null 2>&1; then\n\
+        echo "🖥️  Display variable set: $DISPLAY"\n\
+        # Try to connect to X server\n\
+        if timeout 5 xset q >/dev/null 2>&1; then\n\
             echo "✅ X11 display available: $DISPLAY"\n\
+            return 0\n\
+        elif [ "$DISPLAY" != ":99" ]; then\n\
+            echo "⚠️  Display set but X server not responding, but trying anyway: $DISPLAY"\n\
             return 0\n\
         fi\n\
     fi\n\

@@ -179,6 +179,44 @@ class SortingComparisonGUI:
                                       variable=self.elements_var, command=self.update_elements_from_scale)
         self.elements_scale.pack(fill=tk.X, pady=5)
         
+        # Distribution type selection
+        distribution_frame = ttk.LabelFrame(control_frame, text="Data Distribution", padding="5")
+        distribution_frame.grid(row=row, column=0, sticky=(tk.W, tk.E), pady=(0, 10))
+        row += 1
+        
+        # Distribution dropdown
+        distribution_container = ttk.Frame(distribution_frame)
+        distribution_container.pack(fill=tk.X)
+        
+        self.distribution_label = ttk.Label(distribution_container, text="Type:")
+        self.distribution_label.pack(side=tk.LEFT, anchor=tk.W)
+        
+        self.distribution_var = tk.StringVar(value="uniform")
+        distribution_options = [
+            ("Uniform", "uniform"),
+            ("Normal/Gaussian", "normal"),
+            ("Exponential", "exponential"),
+            ("Beta", "beta")
+        ]
+        
+        self.distribution_combo = ttk.Combobox(distribution_container, textvariable=self.distribution_var,
+                                             values=[opt[0] for opt in distribution_options],
+                                             state="readonly", width=15)
+        self.distribution_combo.pack(side=tk.RIGHT, padx=(5, 0))
+        
+        # Map display names to internal values
+        self.distribution_map = {opt[0]: opt[1] for opt in distribution_options}
+        self.distribution_reverse_map = {opt[1]: opt[0] for opt in distribution_options}
+        
+        # Set default selection
+        self.distribution_combo.set("Uniform")
+        
+        # Add help text for distribution
+        dist_help_text = ttk.Label(distribution_frame, 
+                                 text="Affects the statistical pattern of generated data", 
+                                 font=("Arial", 8), foreground="gray")
+        dist_help_text.pack(anchor=tk.W, pady=(5, 0))
+        
         # Perturbation level slider
         perturbation_frame = ttk.LabelFrame(control_frame, text="Perturbation Level", padding="5")
         perturbation_frame.grid(row=row, column=0, sticky=(tk.W, tk.E), pady=(0, 10))
@@ -236,8 +274,8 @@ class SortingComparisonGUI:
         self.run_button.pack(fill=tk.X, pady=(0, 10))
         
         # Other action buttons
-        ttk.Button(button_frame, text="Update Plots", 
-                  command=self.update_plots).pack(fill=tk.X, pady=(0, 5))
+        #ttk.Button(button_frame, text="Update Plots", 
+        #          command=self.update_plots).pack(fill=tk.X, pady=(0, 5))
         ttk.Button(button_frame, text="Export Plot", 
                   command=self.export_plot).pack(fill=tk.X, pady=(0, 5))
         ttk.Button(button_frame, text="Reload Data", 
@@ -391,6 +429,9 @@ class SortingComparisonGUI:
         self.validate_elements_entry()
         self.validate_perturbation_entry()
         
+        # Get selected distribution for confirmation dialog
+        selected_distribution_display = self.distribution_combo.get()
+        
         # Show confirmation dialog
         msg = f"""Run algorithms with the following settings?
 
@@ -398,6 +439,7 @@ Languages: {', '.join(lang.upper() for lang in selected_languages)}
 Algorithms: {len(selected_algorithms)} selected
 Runs: {num_runs}
 Elements: {num_elements:,}
+Distribution: {selected_distribution_display}
 Perturbation: {perturbation_level:.2f} (0.0=sorted, 1.0=random)
 
 This will execute the benchmark scripts and may take some time.
@@ -449,7 +491,11 @@ This will execute the benchmark scripts and may take some time.
         import tempfile
         
         # Create dataset file using the creator
-        dataset_path = self.create_dataset_with_creator(elements, perturbation_level)
+        # Get selected distribution type
+        selected_distribution_display = self.distribution_combo.get()
+        selected_distribution = self.distribution_map.get(selected_distribution_display, "uniform")
+        
+        dataset_path = self.create_dataset_with_creator(elements, perturbation_level, selected_distribution)
         if not dataset_path:
             return False
         
@@ -581,7 +627,7 @@ This will execute the benchmark scripts and may take some time.
             if os.path.exists(dataset_path):
                 os.remove(dataset_path)
     
-    def create_dataset_with_creator(self, num_elements, perturbation_level):
+    def create_dataset_with_creator(self, num_elements, perturbation_level, distribution_type="uniform"):
         """Create a dataset using the creator.cpp program"""
         import subprocess
         import tempfile
@@ -614,11 +660,11 @@ This will execute the benchmark scripts and may take some time.
             with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.txt') as f:
                 output_path = f.name
             
-            # Run the creator
+            # Run the creator with selected distribution
             cmd = [
                 creator_path,
                 "--size", str(num_elements),
-                "--distribution", "uniform",
+                "--distribution", distribution_type,
                 "--perturbation", str(perturbation_level),
                 "--output", output_path
             ]

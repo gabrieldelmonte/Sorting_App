@@ -1,0 +1,101 @@
+[
+    {
+        "algorithm": "counting_sort",
+        "average_time": 0.001375192,
+        "max_time": 0.001375192,
+        "min_time": 0.001375192,
+        "runs": 1,
+        "std_deviation": 0.0,
+        "times": [
+            0.001375192
+        ]
+    },
+    {
+        "algorithm": "bucket_sort",
+        "average_time": 0.004330903,
+        "max_time": 0.004330903,
+        "min_time": 0.004330903,
+        "runs": 1,
+        "std_deviation": 0.0,
+        "times": [
+            0.004330903
+        ]
+    },
+    {
+        "algorithm": "radix_sort",
+        "average_time": 0.004781255,
+        "max_time": 0.004781255,
+        "min_time": 0.004781255,
+        "runs": 1,
+        "std_deviation": 0.0,
+        "times": [
+            0.004781255
+        ]
+    },
+    {
+        "algorithm": "heap_sort",
+        "average_time": 0.008719555,
+        "max_time": 0.008719555,
+        "min_time": 0.008719555,
+        "runs": 1,
+        "std_deviation": 0.0,
+        "times": [
+            0.008719555
+        ]
+    },
+    {
+        "algorithm": "quick_sort",
+        "average_time": 0.00978449,
+        "max_time": 0.00978449,
+        "min_time": 0.00978449,
+        "runs": 1,
+        "std_deviation": 0.0,
+        "times": [
+            0.00978449
+        ]
+    },
+    {
+        "algorithm": "merge_sort",
+        "average_time": 0.010363114,
+        "max_time": 0.010363114,
+        "min_time": 0.010363114,
+        "runs": 1,
+        "std_deviation": 0.0,
+        "times": [
+            0.010363114
+        ]
+    },
+    {
+        "algorithm": "insertion_sort",
+        "average_time": 0.205037824,
+        "max_time": 0.205037824,
+        "min_time": 0.205037824,
+        "runs": 1,
+        "std_deviation": 0.0,
+        "times": [
+            0.205037824
+        ]
+    },
+    {
+        "algorithm": "selection_sort",
+        "average_time": 0.846669791,
+        "max_time": 0.846669791,
+        "min_time": 0.846669791,
+        "runs": 1,
+        "std_deviation": 0.0,
+        "times": [
+            0.846669791
+        ]
+    },
+    {
+        "algorithm": "bubble_sort",
+        "average_time": 1.744487314,
+        "max_time": 1.744487314,
+        "min_time": 1.744487314,
+        "runs": 1,
+        "std_deviation": 0.0,
+        "times": [
+            1.744487314
+        ]
+    }
+]

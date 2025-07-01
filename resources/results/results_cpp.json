@@ -1,110 +1,101 @@
 [
     {
         "algorithm": "counting_sort",
-        "average_time": 7.6435e-06,
-        "max_time": 1.0312e-05,
-        "min_time": 4.975e-06,
-        "runs": 2,
-        "std_deviation": 2.6685000000000004e-06,
+        "average_time": 0.001987386,
+        "max_time": 0.001987386,
+        "min_time": 0.001987386,
+        "runs": 1,
+        "std_deviation": 0.0,
         "times": [
-            1.0312e-05,
-            4.975e-06
+            0.001987386
         ]
     },
     {
         "algorithm": "bucket_sort",
-        "average_time": 4.2888e-05,
-        "max_time": 4.7989e-05,
-        "min_time": 3.7787e-05,
-        "runs": 2,
-        "std_deviation": 5.100999999999997e-06,
+        "average_time": 0.004385766,
+        "max_time": 0.004385766,
+        "min_time": 0.004385766,
+        "runs": 1,
+        "std_deviation": 0.0,
         "times": [
-            4.7989e-05,
-            3.7787e-05
+            0.004385766
         ]
     },
     {
         "algorithm": "radix_sort",
-        "average_time": 1.9715e-05,
-        "max_time": 2.0135e-05,
-        "min_time": 1.9295e-05,
-        "runs": 2,
-        "std_deviation": 4.1999999999999937e-07,
+        "average_time": 0.005466315,
+        "max_time": 0.005466315,
+        "min_time": 0.005466315,
+        "runs": 1,
+        "std_deviation": 0.0,
         "times": [
-            2.0135e-05,
-            1.9295e-05
-        ]
-    },
-    {
-        "algorithm": "heap_sort",
-        "average_time": 4.7208e-05,
-        "max_time": 4.8362e-05,
-        "min_time": 4.6054e-05,
-        "runs": 2,
-        "std_deviation": 1.1539999999999995e-06,
-        "times": [
-            4.8362e-05,
-            4.6054e-05
+            0.005466315
         ]
     },
     {
         "algorithm": "quick_sort",
-        "average_time": 4.46445e-05,
-        "max_time": 4.805e-05,
-        "min_time": 4.1239e-05,
-        "runs": 2,
-        "std_deviation": 3.4055e-06,
+        "average_time": 0.006415669,
+        "max_time": 0.006415669,
+        "min_time": 0.006415669,
+        "runs": 1,
+        "std_deviation": 0.0,
         "times": [
-            4.805e-05,
-            4.1239e-05
+            0.006415669
+        ]
+    },
+    {
+        "algorithm": "heap_sort",
+        "average_time": 0.008269876,
+        "max_time": 0.008269876,
+        "min_time": 0.008269876,
+        "runs": 1,
+        "std_deviation": 0.0,
+        "times": [
+            0.008269876
         ]
     },
     {
         "algorithm": "merge_sort",
-        "average_time": 9.7373e-05,
-        "max_time": 0.000118221,
-        "min_time": 7.6525e-05,
-        "runs": 2,
-        "std_deviation": 2.0848e-05,
+        "average_time": 0.009555753,
+        "max_time": 0.009555753,
+        "min_time": 0.009555753,
+        "runs": 1,
+        "std_deviation": 0.0,
         "times": [
-            0.000118221,
-            7.6525e-05
+            0.009555753
         ]
     },
     {
         "algorithm": "insertion_sort",
-        "average_time": 0.0002364625,
-        "max_time": 0.000243785,
-        "min_time": 0.00022914,
-        "runs": 2,
-        "std_deviation": 7.322500000000003e-06,
+        "average_time": 0.198531182,
+        "max_time": 0.198531182,
+        "min_time": 0.198531182,
+        "runs": 1,
+        "std_deviation": 0.0,
         "times": [
-            0.000243785,
-            0.00022914
+            0.198531182
         ]
     },
     {
         "algorithm": "selection_sort",
-        "average_time": 0.000339307,
-        "max_time": 0.000339717,
-        "min_time": 0.000338897,
-        "runs": 2,
-        "std_deviation": 4.1000000000000454e-07,
+        "average_time": 0.837430141,
+        "max_time": 0.837430141,
+        "min_time": 0.837430141,
+        "runs": 1,
+        "std_deviation": 0.0,
         "times": [
-            0.000339717,
-            0.000338897
+            0.837430141
         ]
     },
     {
         "algorithm": "bubble_sort",
-        "average_time": 0.0005751825,
-        "max_time": 0.00059247,
-        "min_time": 0.000557895,
-        "runs": 2,
-        "std_deviation": 1.7287500000000007e-05,
+        "average_time": 1.581287172,
+        "max_time": 1.581287172,
+        "min_time": 1.581287172,
+        "runs": 1,
+        "std_deviation": 0.0,
         "times": [
-            0.00059247,
-            0.000557895
+            1.581287172
         ]
     }
 ]
